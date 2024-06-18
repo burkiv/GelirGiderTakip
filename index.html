@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -63,6 +63,8 @@
 </body>
 </html>
 
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gelir Gider Takip</title>
@@ -126,28 +128,32 @@
 <body>
     <div class="container">
         <h1>Gelir Gider Takip</h1>
-        <form id="transaction-form">
-            <input type="text" id="description" placeholder="Açıklama" required>
-            <input type="number" id="amount" placeholder="Tutar" required>
-            <select id="type" required>
-                <option value="Gelir">Gelir</option>
-                <option value="Gider">Gider</option>
-            </select>
-            <button type="submit">Ekle</button>
-        </form>
-        
-        <table>
-            <thead>
-                <tr>
-                    <th>Açıklama</th>
-                    <th>Gelir</th>
-                    <th>Gider</th>
-                </tr>
-            </thead>
-            <tbody id="transaction-list">
-                <!-- İşlemler burada listelenecek -->
-            </tbody>
-        </table>
+ <form id="transaction-form">
+    <input type="text" id="description" placeholder="Açıklama" required>
+    <input type="number" id="amount" placeholder="Tutar" required>
+    <select id="type" required>
+        <option value="Gelir">Gelir</option>
+        <option value="Gider">Gider</option>
+    </select>
+    <button type="submit">Ekle</button>
+</form>
+<button onclick="clearAllTransactions()">Tüm İşlemleri Sil</button>
+
+    <table>
+    <thead>
+        <tr>
+            <th>Açıklama</th>
+            <th>Gelir</th>
+            <th>Gider</th>
+            <th>Tarih</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody id="transaction-list">
+        <!-- İşlemler burada listelenecek -->
+    </tbody>
+</table>
+
         <div id="summary" class="summary">
             <!-- Gelir ve giderlerin toplamı burada gösterilecek -->
         </div>
