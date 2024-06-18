@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gelir Gider Takip</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        input, select, button {
+            padding: 10px;
+            margin: 10px 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .summary {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        #chart-container {
+            width: 400px;
+            height: 400px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gelir Gider Takip</h1>
+        <form id="transaction-form">
+            <input type="text" id="description" placeholder="Açıklama" required>
+            <input type="number" id="amount" placeholder="Tutar" required>
+            <select id="type" required>
+                <option value="Gelir">Gelir</option>
+                <option value="Gider">Gider</option>
+            </select>
+            <button type="submit">Ekle</button>
+        </form>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Açıklama</th>
+                    <th>Gelir</th>
+                    <th>Gider</th>
+                </tr>
+            </thead>
+            <tbody id="transaction-list">
+                <!-- İşlemler burada listelenecek -->
+            </tbody>
+        </table>
+        <div id="summary" class="summary">
+            <!-- Gelir ve giderlerin toplamı burada gösterilecek -->
+        </div>
+        <div id="chart-container">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
