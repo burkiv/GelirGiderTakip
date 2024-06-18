@@ -1,39 +1,90 @@
+let editIndex = -1;
+
 document.getElementById('transaction-form').addEventListener('submit', function(e) {
     e.preventDefault();
 
     const description = document.getElementById('description').value;
     const amount = parseFloat(document.getElementById('amount').value);
     const type = document.getElementById('type').value;
+    const date = new Date().toLocaleString();
 
-    addTransaction(description, amount, type);
+    if (editIndex === -1) {
+        // Yeni işlem ekleme
+        addTransaction(description, amount, type, date);
+    } else {
+        // Mevcut işlemi güncelleme
+        transactions[editIndex] = { description, amount, type, date };
+        editIndex = -1; // Düzenleme modundan çık
+    }
+
     saveTransactions();
+    renderTransactions();
     updateSummary();
     updateChart();
+
+    // Formu temizle
+    document.getElementById('transaction-form').reset();
 });
 
 let transactions = loadTransactions();
 
-function addTransaction(description, amount, type) {
-    transactions.push({ description, amount, type });
+function addTransaction(description, amount, type, date) {
+    transactions.push({ description, amount, type, date });
 
+    renderTransactions();
+}
+
+function renderTransactions() {
     const transactionList = document.getElementById('transaction-list');
-    const row = document.createElement('tr');
+    transactionList.innerHTML = '';
 
-    if (type === 'Gelir') {
-        row.innerHTML = `
-            <td>${description}</td>
-            <td style="color: green;">${amount.toFixed(2)}</td>
-            <td></td>
-        `;
-    } else {
-        row.innerHTML = `
-            <td>${description}</td>
-            <td></td>
-            <td style="color: red;">${amount.toFixed(2)}</td>
-        `;
-    }
+    transactions.forEach((transaction, index) => {
+        const row = document.createElement('tr');
 
-    transactionList.appendChild(row);
+        if (transaction.type === 'Gelir') {
+            row.innerHTML = `
+                <td>${transaction.description}</td>
+                <td style="color: green;">${transaction.amount.toFixed(2)}</td>
+                <td></td>
+                <td>${transaction.date}</td>
+                <td>
+                    <button onclick="editTransaction(${index})">Düzenle</button>
+                    <button onclick="deleteTransaction(${index})">Sil</button>
+                </td>
+            `;
+        } else {
+            row.innerHTML = `
+                <td>${transaction.description}</td>
+                <td></td>
+                <td style="color: red;">${transaction.amount.toFixed(2)}</td>
+                <td>${transaction.date}</td>
+                <td>
+                    <button onclick="editTransaction(${index})">Düzenle</button>
+                    <button onclick="deleteTransaction(${index})">Sil</button>
+                </td>
+            `;
+        }
+
+        transactionList.appendChild(row);
+    });
+}
+
+function deleteTransaction(index) {
+    transactions.splice(index, 1); // İlgili işlemi listeden çıkar
+    saveTransactions(); // Güncellenmiş listeyi kaydet
+    renderTransactions(); // İşlemleri yeniden render et
+    updateSummary(); // Özet bilgileri güncelle
+    updateChart(); // Grafiği güncelle
+}
+
+function editTransaction(index) {
+    const transaction = transactions[index];
+    document.getElementById('description').value = transaction.description;
+    document.getElementById('amount').value = transaction.amount;
+    document.getElementById('type').value = transaction.type;
+
+    // Düzenleme moduna geç
+    editIndex = index;
 }
 
 function updateSummary() {
@@ -104,29 +155,12 @@ function loadTransactions() {
     return savedTransactions ? JSON.parse(savedTransactions) : [];
 }
 
-function renderTransactions() {
-    const transactionList = document.getElementById('transaction-list');
-    transactionList.innerHTML = '';
-
-    transactions.forEach(transaction => {
-        const row = document.createElement('tr');
-
-        if (transaction.type === 'Gelir') {
-            row.innerHTML = `
-                <td>${transaction.description}</td>
-                <td style="color: green;">${transaction.amount.toFixed(2)}</td>
-                <td></td>
-            `;
-        } else {
-            row.innerHTML = `
-                <td>${transaction.description}</td>
-                <td></td>
-                <td style="color: red;">${transaction.amount.toFixed(2)}</td>
-            `;
-        }
-
-        transactionList.appendChild(row);
-    });
+function clearAllTransactions() {
+    transactions = []; // İşlem listesini boşalt
+    saveTransactions(); // Boş listeyi kaydet
+    renderTransactions(); // İşlemleri yeniden render et
+    updateSummary(); // Özet bilgileri güncelle
+    updateChart(); // Grafiği güncelle
 }
 
 document.addEventListener('DOMContentLoaded', function() {
